@@ -8,7 +8,7 @@
 - `docs/data-sources.md` (files, sizes, versions, licenses, citations) and `docs/scope.md` (hypotheses,
   module support, decisions).
 - Inspection scripts kept outside the repository by request (not versioned).
-**Decisions:** none yet — D1–D9 in `docs/scope.md` await approval.
+**Decisions:** scope and D1–D9 approved on 2026-11-18 — [ADR-0001](decisions/ADR-0001-phase0-data-scope.md).
 **Data/quality findings:**
 - H1–H6 confirmed, H7 partially confirmed (WC 2018 needed only for the StatsBomb benchmark).
 - Derived minutes match PlayeRank 99.0%; Brighton 2017/18 table passes sanity checks.
@@ -16,6 +16,6 @@
 - Valuation coverage 99.9% / 97.0% / 90.6% at 2018 / 2020 / 2022.
 - 1,152 Wyscout player names are double-escaped; `referees.json` is truncated.
 - No salary or contract history (contract risk uses user inputs and pooled calibration).
-**Blockers / open questions:** approval of `docs/scope.md` and decisions D1–D9.
+**Blockers / open questions:** PR into `develop` to be pushed and merged (needs OK); CLAUDE.md not yet updated with the confirmed scope.
 **Next session starts with:** applying the approved scope to CLAUDE.md, then S1 infrastructure.
-**Status:** on track
+**Status:** done (pending merge)

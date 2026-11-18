@@ -1,6 +1,7 @@
 # Scope — what the data supports
 
-**Status:** proposal, pending approval · **Date:** 2026-11-18 · **Evidence:**
+**Status:** approved by the product owner on 2026-11-18, including decisions D1–D9 as recommended
+([ADR-0001](decisions/ADR-0001-phase0-data-scope.md)) · **Date:** 2026-11-18 · **Evidence:**
 [`data-inspection/phase0-report.md`](data-inspection/phase0-report.md) (section numbers Qn below).
 
 ## 1. Hypotheses
