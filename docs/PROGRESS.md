@@ -36,11 +36,13 @@
 **Data/quality findings:**
 - Derived vs PlayeRank minutes: 46,395 / 46,880 exact = 98.97% (Phase 0 reported it rounded as 99.0%),
   46,627 within 5 min.
+- Idempotency verified: `fse load all` run twice in a row (82 s and 91 s) and `fse build core` twice
+  leave identical row counts and no duplicate `(match_id, player_id)` keys; 20/20 tests pass afterwards.
 **Blockers / open questions:**
-- Re-running the Wyscout load (idempotency check) crashed PostgreSQL with an fsync I/O error: the Mac
-  disk has 2.1 GB free (99% used). The transaction rolled back and the database recovered intact, but
-  the idempotency check is not yet verified. Needs free disk space and a lighter reload (WAL).
+- Resolved: a first reload attempt crashed PostgreSQL with an fsync I/O error because the Mac disk was
+  full (2.1 GB free). The transaction rolled back intact; with disk space freed (39 GB) the reloads run
+  cleanly, so the WAL settings in `docker-compose.yml` were left unchanged.
 - Schedule: S1 closes ~1 week late.
-**Next session starts with:** free disk space, re-run `fse load all` twice to verify idempotency, then
-push the four branches and open PRs.
-**Status:** at risk
+**Next session starts with:** push the four stacked branches and open PRs (merge order: environment →
+postgres → raw-schema → minutes), then S2 (Wyscout ↔ Transfermarkt linking) once approved.
+**Status:** done (pending PR review)
