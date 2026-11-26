@@ -3,6 +3,7 @@
 Expected values come from docs/data-inspection/phase0-report.md, Q3.
 """
 
+from decimal import Decimal
 from pathlib import Path
 
 import pytest
@@ -111,9 +112,13 @@ def test_brighton_played_38_matches(conn):
 
 
 def test_minutes_agree_with_playerank(conn):
-    _, exact, within5, _ = conn.execute(_query("minutes_vs_playerank.sql")).fetchone()
-    assert exact >= 0.99
-    assert within5 >= 0.995
+    # Phase 0: 46,395 of 46,880 exact (98.97%, reported rounded as 99.0%); 46,627 within 5 min.
+    n, exact, within5, _ = conn.execute(_query("minutes_vs_playerank.sql")).fetchone()
+    assert n == 46880
+    assert exact >= Decimal("0.9896")
+    assert within5 >= Decimal("0.9945")
+    total = conn.execute("SELECT count(*) FROM core.player_match_minutes").fetchone()[0]
+    assert total == 53791
 
 
 def test_no_league_player_exceeds_full_season(conn):
