@@ -4,6 +4,7 @@ Run with the local `.env` so the database credentials reach the process:
 
     uv run --env-file .env fse db init
     uv run --env-file .env fse load all
+    uv run --env-file .env fse build core
 """
 
 from __future__ import annotations
@@ -23,6 +24,9 @@ def build_parser() -> argparse.ArgumentParser:
 
     load = sub.add_parser("load", help="load source files into the raw schema (idempotent)")
     load.add_argument("source", choices=["wyscout", "transfermarkt", "all"])
+
+    build = sub.add_parser("build", help="rebuild derived layers from raw (idempotent)")
+    build.add_argument("layer", choices=["core"])
     return parser
 
 
@@ -50,6 +54,11 @@ def main(argv: list[str] | None = None) -> int:
             if args.source in ("transfermarkt", "all"):
                 load_transfermarkt(conn, settings.data_root)
             print(f"done in {time.monotonic() - start:.0f}s")
+        elif args.command == "build":
+            from fse.etl import build_core
+
+            for name in build_core(conn):
+                print(f"built {name}")
     return 0
 
 
