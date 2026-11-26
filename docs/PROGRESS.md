@@ -1,7 +1,7 @@
 # Progress log
 
 ## 2026-11-18 — Phase 0 — Data inspection and scope definition
-**Branch:** `docs/phase0-data-inspection` · **PR:** pending
+**Branch:** `docs/phase0-data-inspection` · **PR:** [#1](https://github.com/dagovas27/football-scouting-engine/pull/1) (merged)
 **Done:**
 - Read-only inspection of `~/Documents/data-sc/` (Wyscout, Transfermarkt, StatsBomb) answering the 10
   Phase 0 questions with numbers: `docs/data-inspection/phase0-report.md`.
@@ -16,6 +16,6 @@
 - Valuation coverage 99.9% / 97.0% / 90.6% at 2018 / 2020 / 2022.
 - 1,152 Wyscout player names are double-escaped; `referees.json` is truncated.
 - No salary or contract history (contract risk uses user inputs and pooled calibration).
-**Blockers / open questions:** PR into `develop` to be pushed and merged (needs OK); CLAUDE.md not yet updated with the confirmed scope.
+**Blockers / open questions:** none (PR merged; manual updated locally with the confirmed scope).
 **Next session starts with:** applying the approved scope to CLAUDE.md, then S1 infrastructure.
-**Status:** done (pending merge)
+**Status:** done
