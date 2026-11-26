@@ -1,0 +1,35 @@
+[project]
+name = "fse"
+version = "0.1.0"
+description = "Football Scouting & Valuation Engine for budget-constrained clubs"
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "psycopg[binary]>=3.2,<4",
+]
+
+[project.scripts]
+fse = "fse.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "ruff>=0.6",
+]
+
+[build-system]
+requires = ["uv_build>=0.11,<0.12"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "db: needs the local PostgreSQL with data loaded (skipped when unavailable)",
+]
