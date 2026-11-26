@@ -19,3 +19,30 @@
 **Blockers / open questions:** none (PR merged; manual updated locally with the confirmed scope).
 **Next session starts with:** applying the approved scope to CLAUDE.md, then S1 infrastructure.
 **Status:** done
+
+## 2026-11-25 — S1 — Infrastructure: environment, PostgreSQL, raw load, minutes
+**Branch:** `chore/s1-environment` → `chore/s1-postgres` → `feature/s1-raw-schema` → `feature/s1-minutes` (stacked) · **PR:** pending
+**Done:**
+- Python 3.11.5 + `uv` (ADR-0002, closes D9); `psycopg` 3.3.9, `pytest`, `ruff`.
+- `docker-compose.yml` with `postgres:16.16` on `127.0.0.1:55432` (5432 and 5433 are taken by other
+  local PostgreSQL servers); credentials only in the gitignored `.env`.
+- Schemas `raw/core/analytics/app`, 6 Wyscout + 12 Transfermarkt raw tables, idempotent TRUNCATE + COPY
+  loaders with `raw.load_log` (ADR-0003). Full load: 18 tables in 56 s; every row count equals Phase 0
+  (e.g. 3,251,294 events, 656,301 valuations).
+- `core.wy_*` with decoded names and `core.player_match_minutes` (53,791 rows, same as Phase 0).
+- S1 acceptance: `sql/queries/brighton_minutes_2017_18.sql` returns the Phase 0 Brighton table exactly
+  (24 players, 38 matches, Dunk and Ryan 3,420). 20/20 tests pass (14 unit + 6 database).
+**Decisions:** ADR-0002 (Python/uv), ADR-0003 (raw layer and loading).
+**Data/quality findings:**
+- Derived vs PlayeRank minutes: 46,395 / 46,880 exact = 98.97% (Phase 0 reported it rounded as 99.0%),
+  46,627 within 5 min.
+- Idempotency verified: `fse load all` run twice in a row (82 s and 91 s) and `fse build core` twice
+  leave identical row counts and no duplicate `(match_id, player_id)` keys; 20/20 tests pass afterwards.
+**Blockers / open questions:**
+- Resolved: a first reload attempt crashed PostgreSQL with an fsync I/O error because the Mac disk was
+  full (2.1 GB free). The transaction rolled back intact; with disk space freed (39 GB) the reloads run
+  cleanly, so the WAL settings in `docker-compose.yml` were left unchanged.
+- Schedule: S1 closes ~1 week late.
+**Next session starts with:** push the four stacked branches and open PRs (merge order: environment →
+postgres → raw-schema → minutes), then S2 (Wyscout ↔ Transfermarkt linking) once approved.
+**Status:** done (pending PR review)
